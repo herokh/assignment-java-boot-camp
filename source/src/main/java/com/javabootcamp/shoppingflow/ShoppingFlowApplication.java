@@ -1,9 +1,6 @@
 package com.javabootcamp.shoppingflow;
 
-import com.javabootcamp.shoppingflow.seeders.AddressSeeder;
-import com.javabootcamp.shoppingflow.seeders.MerchantSeeder;
-import com.javabootcamp.shoppingflow.seeders.ProductSeeder;
-import com.javabootcamp.shoppingflow.seeders.UserSeeder;
+import com.javabootcamp.shoppingflow.seeders.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,6 +21,12 @@ public class ShoppingFlowApplication {
 	private MerchantSeeder merchantSeeder;
 
 	@Autowired
+	private ProductBrandSeeder productBrandSeeder;
+
+	@Autowired
+	private ProductCategorySeeder productCategorySeeder;
+
+	@Autowired
 	private ProductSeeder productSeeder;
 
 	@PostConstruct
@@ -36,6 +39,8 @@ public class ShoppingFlowApplication {
 		addressSeeder.createAddressMock();
 		userSeeder.createUserMock();
 		merchantSeeder.createMerchantMock();
+		productBrandSeeder.createProductBrandMock();
+		productCategorySeeder.createProductCategoryMock();
 		productSeeder.createProductsMock();
 	}
 

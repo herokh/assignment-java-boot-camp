@@ -13,7 +13,6 @@ public class UserSeeder {
     @Autowired
     private UserRepository userRepository;
 
-    @Transactional
     public void createUserMock() {
         String hashPassword = BCryptUtil.hashString("1234");
         var user1 = new User();

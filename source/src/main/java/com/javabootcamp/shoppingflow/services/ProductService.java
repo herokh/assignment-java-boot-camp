@@ -1,20 +1,18 @@
 package com.javabootcamp.shoppingflow.services;
 
 import com.javabootcamp.shoppingflow.exceptions.ProductNotFoundException;
-import com.javabootcamp.shoppingflow.models.Address;
-import com.javabootcamp.shoppingflow.models.Merchant;
-import com.javabootcamp.shoppingflow.models.Product;
+import com.javabootcamp.shoppingflow.models.*;
 import com.javabootcamp.shoppingflow.repositories.ProductRepository;
 import com.javabootcamp.shoppingflow.views.common.AddressResponse;
 import com.javabootcamp.shoppingflow.views.common.MerchantResponse;
-import com.javabootcamp.shoppingflow.views.product.ProductItemResponse;
-import com.javabootcamp.shoppingflow.views.product.ProductListResponse;
+import com.javabootcamp.shoppingflow.views.product.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +44,38 @@ public class ProductService {
             throw new ProductNotFoundException("Product is empty.");
         }
         return productListResponse;
+    }
+
+    public ProductDetailResponse getProductDetail(long productId) {
+        Optional<Product> product = productRepository.findById(productId);
+        if (product.isPresent()) {
+            Product productDomain = product.get();
+            ProductDetailResponse productView = new ProductDetailResponse();
+            productView.setId(productDomain.getId());
+            productView.setName(productDomain.getName());
+            productView.setImageUrl(productDomain.getImageUrl());
+            productView.setPrice(productDomain.getPrice());
+            productView.setNetPrice(productDomain.getNetPrice());
+            productView.setRating(productDomain.getRating());
+            productView.setTotalReviewer(productDomain.getTotalReviewer());
+            productView.setImageThumbnailUrls(new ArrayList<>()); // TODO: The thumbnails feature is not implemented yet.
+            productView.setPromotionEndDate(null); // TODO: The promotion feature is not implemeted yet.
+
+            ProductBrand productBrand = productDomain.getProductBrand();
+            ProductBrandResponse productBrandView = new ProductBrandResponse();
+            productBrandView.setId(productBrand.getId());
+            productBrandView.setName(productBrand.getName());
+            productView.setBrand(productBrandView);
+
+            ProductCategory productCategory = productDomain.getProductCategory();
+            ProductCategoryResponse productCategoryView = new ProductCategoryResponse();
+            productCategoryView.setId(productCategory.getId());
+            productCategoryView.setName(productCategory.getName());
+            productView.setCategory(productCategoryView);
+
+            return productView;
+        }
+        throw new ProductNotFoundException(String.format("Product id %d is not found.", productId));
     }
 
     private List<ProductItemResponse> mapProductResultView(Page<Product> productsPaged) {

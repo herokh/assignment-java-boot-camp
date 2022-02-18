@@ -19,8 +19,15 @@ public class Product {
     private @Getter @Setter float rating;
     private @Getter @Setter int totalReviewer;
 
-    private @Getter @Setter
     @OneToOne
     @JoinColumn(name = "merchant_id")
-    Merchant merchant;
+    private @Getter @Setter Merchant merchant;
+
+    @OneToOne
+    @JoinColumn(name = "product_brand_id")
+    private @Getter @Setter ProductBrand productBrand;
+
+    @OneToOne
+    @JoinColumn(name = "product_category_id")
+    private @Getter @Setter ProductCategory productCategory;
 }
