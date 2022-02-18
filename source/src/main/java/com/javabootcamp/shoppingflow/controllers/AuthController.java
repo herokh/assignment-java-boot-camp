@@ -1,7 +1,7 @@
 package com.javabootcamp.shoppingflow.controllers;
 
-import com.javabootcamp.shoppingflow.views.AuthRequest;
-import com.javabootcamp.shoppingflow.views.AuthResponse;
+import com.javabootcamp.shoppingflow.views.auth.AuthRequest;
+import com.javabootcamp.shoppingflow.views.auth.AuthResponse;
 import com.javabootcamp.shoppingflow.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

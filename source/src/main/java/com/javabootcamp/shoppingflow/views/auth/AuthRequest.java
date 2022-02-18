@@ -1,4 +1,4 @@
-package com.javabootcamp.shoppingflow.views;
+package com.javabootcamp.shoppingflow.views.auth;
 
 import lombok.Getter;
 import lombok.Setter;

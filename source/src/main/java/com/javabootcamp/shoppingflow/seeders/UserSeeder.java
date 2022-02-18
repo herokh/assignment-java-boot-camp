@@ -17,6 +17,7 @@ public class UserSeeder {
     public void createUserMock() {
         String hashPassword = BCryptUtil.hashString("1234");
         var user1 = new User();
+        user1.setId(1L);
         user1.setUsername("hero");
         user1.setPassword(hashPassword);
         userRepository.save(user1);

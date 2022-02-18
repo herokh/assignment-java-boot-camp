@@ -8,10 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class User {
+public class Address {
     @Id
     @Column(name = "id", nullable = false)
     private @Getter @Setter Long id;
-    private @Getter @Setter String username;
-    private @Getter @Setter String password;
+    private @Getter @Setter String province;
 }
