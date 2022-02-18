@@ -27,7 +27,10 @@ public class ProductService {
     private ProductRepository productRepository;
 
     public ProductListResponse getProductList(Optional<Integer> pageNumber, Optional<String> productNameSearch) {
-        Pageable pageable = PageRequest.of(pageNumber.isPresent() ? pageNumber.get() : 0, PAGE_SIZE);
+        int pageNumberValue = pageNumber.isPresent() ? pageNumber.get() - 1 : 0;
+        if (pageNumberValue < 0)
+            pageNumberValue = 0;
+        Pageable pageable = PageRequest.of(pageNumberValue, PAGE_SIZE);
         Page<Product> productsPaged = productRepository.findByNameContaining(
                 productNameSearch.isPresent() ? productNameSearch.get() : "", pageable);
 
