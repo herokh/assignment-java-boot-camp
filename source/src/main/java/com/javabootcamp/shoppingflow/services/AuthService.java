@@ -1,6 +1,7 @@
 package com.javabootcamp.shoppingflow.services;
 
 import com.javabootcamp.shoppingflow.exceptions.AuthFailureException;
+import com.javabootcamp.shoppingflow.utils.BCryptUtil;
 import com.javabootcamp.shoppingflow.utils.JwtUtil;
 import com.javabootcamp.shoppingflow.views.AuthRequest;
 import com.javabootcamp.shoppingflow.views.AuthResponse;
@@ -22,8 +23,8 @@ public class AuthService {
         var hasUser = userRepository.existsByUsername(authRequest.getUsername());
         if (hasUser){
             var user = userRepository.findByUsername(authRequest.getUsername());
-            var hashPassword = user.get().getPassword();
-            if (hashPassword.equals(authRequest.getPassword())) {
+            var isPasswordValid = BCryptUtil.validateHashString(authRequest.getPassword(), user.get().getPassword());
+            if (isPasswordValid) {
                 var userLoginResponse = new AuthResponse();
                 userLoginResponse.setExpiredDate(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY));
                 userLoginResponse
