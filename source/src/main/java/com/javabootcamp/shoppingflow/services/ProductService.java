@@ -24,13 +24,13 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public ProductListResponse getProductList(Optional<Integer> pageNumber, Optional<String> productNameSearch) {
+    public ProductListResponse getProductList(Optional<Integer> pageNumber, Optional<String> searchTerm) {
         int pageNumberValue = pageNumber.isPresent() ? pageNumber.get() - 1 : 0;
         if (pageNumberValue < 0)
             pageNumberValue = 0;
         Pageable pageable = PageRequest.of(pageNumberValue, PAGE_SIZE);
         Page<Product> productsPaged = productRepository.findByNameContaining(
-                productNameSearch.isPresent() ? productNameSearch.get() : "", pageable);
+                searchTerm.isPresent() ? searchTerm.get() : "", pageable);
 
         ProductListResponse productListResponse = new ProductListResponse();
         if (productsPaged.hasContent()) {

@@ -17,16 +17,14 @@ public class ProductsController {
     private ProductService productService;
 
     @GetMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ProductListResponse getProductList(@RequestParam("page") Optional<Integer> pageNumber,
-                                              @RequestParam("name") Optional<String> productNameSearch) {
-        ProductListResponse productList = productService.getProductList(pageNumber, productNameSearch);
+                                              @RequestParam("name") Optional<String> searchTerm) {
+        ProductListResponse productList = productService.getProductList(pageNumber, searchTerm);
         return productList;
     }
 
     @GetMapping(value = "/{productId}",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ProductDetailResponse getProductDetail(@PathVariable long productId) {
         ProductDetailResponse productDetail = productService.getProductDetail(productId);
