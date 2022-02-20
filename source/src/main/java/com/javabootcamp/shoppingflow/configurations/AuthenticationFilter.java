@@ -30,7 +30,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
-            String jwtToken = request.getHeader(AUTHORIZATION_HEADER);
+            String jwtToken = request.getHeader(AUTHORIZATION_HEADER).replace("Bearer ", "");
             var username = JwtUtil.getUsernameFromToken(jwtToken);
             var user = userRepository.findByUsername(username).orElseThrow(
                     () -> new RuntimeException("User not found."));
