@@ -6,12 +6,14 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
 public class Merchant {
     @Id
     @Column(name = "id", nullable = false)
-    private @Getter @Setter Long id;
-    private @Getter @Setter
+    private Long id;
+
     @OneToOne
     @JoinColumn(name = "address_id")
-    Address address;
+    private Address address;
 }

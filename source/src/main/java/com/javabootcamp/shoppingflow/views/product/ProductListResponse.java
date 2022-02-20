@@ -5,11 +5,13 @@ import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
 public class ProductListResponse{
-	private @Getter @Setter int page;
-	private @Getter @Setter int pageSize;
-	private @Getter @Setter int totalPages;
-	private @Getter @Setter Long totalItems;
+	private int page;
+	private int pageSize;
+	private int totalPages;
+	private Long totalItems;
 
-	private @Getter @Setter List<ProductItemResponse> result;
+	private List<ProductItemResponse> result;
 }

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 @AllArgsConstructor
+@Getter
+@Setter
 public class ErrorResponse {
-    private @Getter @Setter String message;
+    private String message;
 }

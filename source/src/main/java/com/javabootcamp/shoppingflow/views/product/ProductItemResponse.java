@@ -4,13 +4,15 @@ import com.javabootcamp.shoppingflow.views.common.MerchantResponse;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter
+@Setter
 public class ProductItemResponse {
-	private @Getter @Setter Long id;
-	private @Getter @Setter String name;
-	private @Getter @Setter String imageUrl;
-	private @Getter @Setter double price;
-	private @Getter @Setter double netPrice;
-	private @Getter @Setter float rating;
-	private @Getter @Setter int totalReviewer;
-	private @Getter @Setter MerchantResponse merchant;
+	private Long id;
+	private String name;
+	private String imageUrl;
+	private double price;
+	private double netPrice;
+	private float rating;
+	private int totalReviewer;
+	private MerchantResponse merchant;
 }

@@ -19,6 +19,6 @@ public class BasketsController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public void addToBasket(@RequestBody BasketRequest request) {
-        basketService.addToBasket(request.getProductId(), request.getQuantity());
+        basketService.updateToBasket(request.getProductId(), request.getQuantity());
     }
 }

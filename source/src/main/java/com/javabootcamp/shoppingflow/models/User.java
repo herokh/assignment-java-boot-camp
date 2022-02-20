@@ -6,12 +6,14 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
 public class User {
     @Id
     @Column(name = "id", nullable = false)
-    private @Getter @Setter Long id;
+    private Long id;
 
     @Column(unique = true)
-    private @Getter @Setter String username;
-    private @Getter @Setter String password;
+    private String username;
+    private String password;
 }
