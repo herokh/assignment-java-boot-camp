@@ -12,36 +12,11 @@ import javax.annotation.PostConstruct;
 public class ShoppingFlowApplication {
 
 	@Autowired
-	private UserSeeder userSeeder;
-
-	@Autowired
-	private AddressSeeder addressSeeder;
-
-	@Autowired
-	private MerchantSeeder merchantSeeder;
-
-	@Autowired
-	private ProductBrandSeeder productBrandSeeder;
-
-	@Autowired
-	private ProductCategorySeeder productCategorySeeder;
-
-	@Autowired
-	private ProductSeeder productSeeder;
+	private SeederContext seederContext;
 
 	@PostConstruct
 	public void initialData() {
-		createDataMocks();
-	}
-
-	@Transactional
-	private void createDataMocks() {
-		addressSeeder.createAddressMock();
-		userSeeder.createUserMock();
-		merchantSeeder.createMerchantMock();
-		productBrandSeeder.createProductBrandMock();
-		productCategorySeeder.createProductCategoryMock();
-		productSeeder.createProductsMock();
+		seederContext.createDataMocks();
 	}
 
 	public static void main(String[] args) {
