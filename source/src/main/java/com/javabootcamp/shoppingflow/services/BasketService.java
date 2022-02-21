@@ -51,32 +51,39 @@ public class BasketService {
 
     public BasketResponse getUserBasket() {
         User currentUser = applicationContext.getCurrentUser();
-        Optional<Basket> userBasket = basketRepository.findByUser(currentUser);
-        if (userBasket.isPresent()) {
-            var basket = userBasket.get();
-            var basketProducts = basket.getBasketProducts();
+        var basket = basketRepository.findByUser(currentUser)
+                .orElseThrow(() -> new BasketEmptyException("User basket is empty."));
+        var basketProducts = basket.getBasketProducts();
 
-            var totalItems = basketProducts.stream()
-                    .mapToInt(x -> x.getQuantity())
-                    .sum();
-            var totalNetAmount = basketProducts.stream()
-                    .mapToDouble(x -> x.getProduct().getNetPrice() * x.getQuantity())
-                    .sum();
-            var totalAmount = basketProducts.stream()
-                    .mapToDouble(x -> x.getProduct().getPrice() * x.getQuantity())
-                    .sum();
+        var totalItems = basketProducts.stream()
+                .mapToInt(x -> x.getQuantity())
+                .sum();
+        var totalNetAmount = basketProducts.stream()
+                .mapToDouble(x -> x.getProduct().getNetPrice() * x.getQuantity())
+                .sum();
+        var totalAmount = basketProducts.stream()
+                .mapToDouble(x -> x.getProduct().getPrice() * x.getQuantity())
+                .sum();
 
-            BasketResponse basketView = new BasketResponse();
-            basketView.setTotalItems(totalItems);
-            basketView.setTotalAmount(totalAmount);
-            basketView.setTotalNetAmount(totalNetAmount);
-            basketView.setBasketItems(mapToBasketProductViews(basketProducts));
+        BasketResponse basketView = new BasketResponse();
+        basketView.setTotalItems(totalItems);
+        basketView.setTotalAmount(totalAmount);
+        basketView.setTotalNetAmount(totalNetAmount);
+        basketView.setBasketItems(mapToBasketProductViews(basketProducts));
 
-            return basketView;
+        return basketView;
+    }
+
+    @Transactional
+    public void cleanupUserBasket () {
+        User currentUser = applicationContext.getCurrentUser();
+
+        var userBasket = basketRepository.findByUser(currentUser)
+                .orElseThrow(() -> new BasketEmptyException("Basket is empty."));
+        for (var p: userBasket.getBasketProducts()) {
+            basketProductRepository.delete(p);
         }
-        else {
-            throw new BasketEmptyException("User basket is empty.");
-        }
+        basketRepository.delete(userBasket);
     }
 
     private void createNewUserBasket(int quantity, Optional<Product> product, User currentUser) {

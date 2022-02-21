@@ -14,4 +14,7 @@ public class Address {
     @Column(name = "id", nullable = false)
     private Long id;
     private String province;
+
+    private String email;
+    private String tel;
 }

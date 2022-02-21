@@ -3,6 +3,7 @@ package com.javabootcamp.shoppingflow.controllers;
 import com.javabootcamp.shoppingflow.services.BasketService;
 import com.javabootcamp.shoppingflow.services.OrderService;
 import com.javabootcamp.shoppingflow.views.basket.BasketRequest;
+import com.javabootcamp.shoppingflow.views.order.NewOrderResponse;
 import com.javabootcamp.shoppingflow.views.order.OrderRequest;
 import com.javabootcamp.shoppingflow.views.order.OrderResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,8 @@ public class OrdersController implements SecuredRestController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void createNewOrder(@RequestBody OrderRequest request) {
-        orderService.createNewOrder(request);
+    public NewOrderResponse createNewOrder(@RequestBody OrderRequest request) {
+        return orderService.createNewOrder(request);
     }
 
     @GetMapping(

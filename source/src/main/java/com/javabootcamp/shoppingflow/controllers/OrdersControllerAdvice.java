@@ -1,5 +1,6 @@
 package com.javabootcamp.shoppingflow.controllers;
 
+import com.javabootcamp.shoppingflow.exceptions.BasketEmptyException;
 import com.javabootcamp.shoppingflow.exceptions.OrderNotFoundException;
 import com.javabootcamp.shoppingflow.exceptions.OrderPaymentInvalidException;
 import com.javabootcamp.shoppingflow.exceptions.ProductNotFoundException;
@@ -31,6 +32,13 @@ public class OrdersControllerAdvice {
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse orderPaymentInvalid(OrderPaymentInvalidException e) {
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler(BasketEmptyException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse basketEmpty(BasketEmptyException e) {
         return new ErrorResponse(e.getMessage());
     }
 }

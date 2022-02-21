@@ -6,8 +6,9 @@ import com.javabootcamp.shoppingflow.exceptions.OrderPaymentInvalidException;
 import com.javabootcamp.shoppingflow.exceptions.ProductNotFoundException;
 import com.javabootcamp.shoppingflow.models.*;
 import com.javabootcamp.shoppingflow.repositories.*;
-import com.javabootcamp.shoppingflow.seeders.MerchantSeeder;
 import com.javabootcamp.shoppingflow.utils.DateTimeUtil;
+import com.javabootcamp.shoppingflow.views.order.NewOrderResponse;
+import com.javabootcamp.shoppingflow.views.order.OrderProductResponse;
 import com.javabootcamp.shoppingflow.views.order.OrderRequest;
 import com.javabootcamp.shoppingflow.views.order.OrderResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class OrderService {
 
     @Autowired
     private BasketService basketService;
+
+    @Autowired
+    private BasketRepository basketRepository;
 
     @Autowired
     private PaymentRepository paymentRepository;
@@ -44,7 +48,8 @@ public class OrderService {
     private ApplicationContext applicationContext;
 
     @Transactional
-    public void createNewOrder(OrderRequest newOrder) {
+    public NewOrderResponse createNewOrder(OrderRequest newOrder) {
+        var userBasket = basketService.getUserBasket();
         Payment payment = paymentRepository.findByPaymentMethodSlug(newOrder.getPaymentMethod())
                 .orElseThrow(() -> new OrderPaymentInvalidException("Payment method is invalid"));
 
@@ -62,7 +67,6 @@ public class OrderService {
         User currentUser = applicationContext.getCurrentUser();
         order.setPayer(currentUser);
 
-        var userBasket = basketService.getUserBasket();
         order.setTotalAmount(userBasket.getTotalAmount());
 
         var orderProducts = new ArrayList<OrderProduct>();
@@ -80,18 +84,39 @@ public class OrderService {
         order.setOrderProducts(orderProducts);
 
         order.setInvoiceNumber(UUID.randomUUID().toString());
-        order.setNote("Test.");
+        order.setNote(newOrder.getNote());
 
         orderRepository.save(order);
         orderPaymentRepository.save(order.getOrderPayment());
         orderProductRepository.saveAll(order.getOrderProducts());
+        basketService.cleanupUserBasket();
+
+        return new NewOrderResponse(order.getId());
     }
 
     public OrderResponse getUserOrder(long orderId) {
-        var orderResponse = new OrderResponse();
+        var orderView = new OrderResponse();
         var order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException("Order not found"));
 
-        return orderResponse;
+        orderView.setId(order.getId());
+        orderView.setInvoiceNumber(order.getInvoiceNumber());
+        orderView.setOrderDateTime(order.getOrderDateTime());
+        orderView.setPaymentExpiredDateTime(order.getPaymentExpiredDateTime());
+        orderView.setTotalAmount(order.getTotalAmount());
+        orderView.setNote(order.getNote());
+
+        var orderProductViews = new ArrayList<OrderProductResponse>();
+        for (var p : order.getOrderProducts()) {
+            var orderProductView = new OrderProductResponse(
+                    p.getId(),
+                    p.getProduct().getName(),
+                    p.getAmount(),
+                    p.getQuantity());
+            orderProductViews.add(orderProductView);
+        }
+        orderView.setResult(orderProductViews);
+
+        return orderView;
     }
 }

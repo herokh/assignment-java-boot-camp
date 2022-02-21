@@ -20,6 +20,12 @@ public class User {
     private String username;
     private String password;
 
+    @OneToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
+
+    private String name;
+
     @OneToMany(mappedBy = "payer", fetch = FetchType.LAZY)
     private List<Order> orders;
 }

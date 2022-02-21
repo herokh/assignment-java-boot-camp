@@ -9,5 +9,6 @@ import java.util.Optional;
 @Setter
 public class OrderRequest{
 	private String paymentMethod;
+	private String note;
 	private Optional<CreditCardRequest> creditCard;
 }

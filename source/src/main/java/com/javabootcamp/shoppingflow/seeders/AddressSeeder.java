@@ -19,6 +19,8 @@ public class AddressSeeder {
         Address address = new Address();
         address.setId(DEFAULT_ADDRESS_ID);
         address.setProvince("Bangkok");
+        address.setTel("+661234567890");
+        address.setEmail("hero@gmail.com");
         addressRepository.save(address);
     }
 
