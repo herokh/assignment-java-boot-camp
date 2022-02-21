@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "payment")
 @Getter
 @Setter
 @AllArgsConstructor

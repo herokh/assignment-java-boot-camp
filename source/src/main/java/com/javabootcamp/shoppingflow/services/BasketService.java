@@ -90,6 +90,7 @@ public class BasketService {
         basket.setBasketProducts(basketProducts);
         basket.setUser(currentUser);
         basketRepository.save(basket);
+        basketProductRepository.saveAll(basket.getBasketProducts());
     }
 
     private void updateUserBasketProduct(long productId, int quantity, Optional<Product> product, Optional<Basket> userBasket) {

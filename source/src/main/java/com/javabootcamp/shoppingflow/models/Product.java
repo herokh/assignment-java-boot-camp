@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "product")
 @Getter 
 @Setter
 public class Product {
@@ -21,8 +22,8 @@ public class Product {
     private float rating;
     private int totalReviewer;
 
-    @OneToOne
-    @JoinColumn(name = "merchant_id")
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Merchant.class)
+    @JoinColumn(name = "merchant_id", referencedColumnName = "id", nullable = false)
     private Merchant merchant;
 
     @OneToOne

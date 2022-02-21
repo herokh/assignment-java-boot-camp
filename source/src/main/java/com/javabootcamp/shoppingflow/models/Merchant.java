@@ -4,8 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
+@Table(name = "merchant")
 @Getter
 @Setter
 public class Merchant {
@@ -16,4 +18,7 @@ public class Merchant {
     @OneToOne
     @JoinColumn(name = "address_id")
     private Address address;
+
+    @OneToMany(mappedBy = "merchant", fetch=FetchType.LAZY)
+    private List<Product> products;
 }
