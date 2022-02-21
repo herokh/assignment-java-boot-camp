@@ -61,8 +61,8 @@ public class OrderService {
         var now = new Date();
         order.setOrderDateTime(now);
 
-        final int expiredPaymentInDays = 3;
-        order.setPaymentExpiredDateTime(DateTimeUtil.addDay(new Date(), expiredPaymentInDays));
+        final int EXPIRED_PAYMENT_IN_DAYS = 3;
+        order.setPaymentExpiredDateTime(DateTimeUtil.addDay(new Date(), EXPIRED_PAYMENT_IN_DAYS));
 
         User currentUser = applicationContext.getCurrentUser();
         order.setPayer(currentUser);

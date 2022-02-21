@@ -1,5 +1,7 @@
 package com.javabootcamp.shoppingflow.utils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -9,5 +11,11 @@ public class DateTimeUtil {
         calendar.setTime(date);
         calendar.add(Calendar.DATE, numberOfDays);
         return calendar.getTime();
+    }
+
+    public static String convertDateToString(Date dt, String pattern) {
+        DateFormat df = new SimpleDateFormat(pattern);
+        String dateToString = df.format(dt);
+        return dateToString;
     }
 }
