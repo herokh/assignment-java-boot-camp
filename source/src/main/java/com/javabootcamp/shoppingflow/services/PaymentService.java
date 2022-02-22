@@ -2,6 +2,7 @@ package com.javabootcamp.shoppingflow.services;
 
 import com.javabootcamp.shoppingflow.repositories.PaymentRepository;
 import com.javabootcamp.shoppingflow.views.payment.PaymentResponse;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@NoArgsConstructor
 public class PaymentService {
+
+    public PaymentService(PaymentRepository paymentRepository) {
+        this.paymentRepository = paymentRepository;
+    }
 
     @Autowired
     private PaymentRepository paymentRepository;
