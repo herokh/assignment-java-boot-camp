@@ -6,18 +6,24 @@ import com.javabootcamp.shoppingflow.utils.JwtUtil;
 import com.javabootcamp.shoppingflow.views.auth.AuthRequest;
 import com.javabootcamp.shoppingflow.views.auth.AuthResponse;
 import com.javabootcamp.shoppingflow.repositories.UserRepository;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
 @Service
+@NoArgsConstructor
 public class AuthService {
 
     private static final int JWT_TOKEN_VALIDITY =  60 * 60 * 1000;
 
     @Autowired
     private UserRepository userRepository;
+
+    public AuthService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public AuthResponse signIn(AuthRequest authRequest) {
         var hasUser = userRepository.existsByUsername(authRequest.getUsername());
