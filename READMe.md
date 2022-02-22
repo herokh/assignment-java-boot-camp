@@ -1,5 +1,5 @@
 ## Shopping flow APIs flowchart diagram
-![Blank diagram](https://user-images.githubusercontent.com/20500388/155092094-c74065f7-7ea4-4a1b-9916-53afdcc70efc.jpeg)
+![Blank diagram](https://user-images.githubusercontent.com/20500388/155092621-295a2683-7ab1-44d6-8858-0557ee8afbeb.jpeg)
 
 ## Wiki page
 ![Link](https://github.com/herokh/assignment-java-boot-camp/wiki/Shopping-flow)
