@@ -30,7 +30,7 @@ public class ShoppingFlowFullTests {
     private TestRestTemplate testRestTemplate;
 
     @Test
-    @DisplayName("Add 1 product into the basket and then create new order. (full test)")
+    @DisplayName("This is the full test running to verify the whole system that is still work fine")
     void shoppingFlowFullTestShouldBeSuccess() {
         // Phase 1 : Signin
 
