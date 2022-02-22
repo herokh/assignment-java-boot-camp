@@ -10,6 +10,7 @@ import com.javabootcamp.shoppingflow.repositories.ProductRepository;
 import com.javabootcamp.shoppingflow.views.basket.BasketBrandResponse;
 import com.javabootcamp.shoppingflow.views.basket.BasketItemResponse;
 import com.javabootcamp.shoppingflow.views.basket.BasketResponse;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +18,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 @Service
+@NoArgsConstructor
 public class BasketService {
+
+    public BasketService(BasketRepository basketRepository, BasketProductRepository basketProductRepository, ProductRepository productRepository, ApplicationContext applicationContext) {
+        this.basketRepository = basketRepository;
+        this.basketProductRepository = basketProductRepository;
+        this.productRepository = productRepository;
+        this.applicationContext = applicationContext;
+    }
 
     @Autowired
     private BasketRepository basketRepository;

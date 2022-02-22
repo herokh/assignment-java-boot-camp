@@ -1,5 +1,6 @@
 package com.javabootcamp.shoppingflow;
 
+import com.javabootcamp.shoppingflow.mocks.ShoppingFlowHttpMock;
 import com.javabootcamp.shoppingflow.utils.DateTimeUtil;
 import com.javabootcamp.shoppingflow.views.auth.AuthRequest;
 import com.javabootcamp.shoppingflow.views.auth.AuthResponse;
@@ -47,7 +48,7 @@ public class ShoppingFlowFullTests {
         assertNotNull(authResponse);
         String userToken = authResponse.getToken();
         assertNotNull(userToken);
-        HttpEntity<Class<Void>> requestHttpGetEntity = ShoppingFlowTestUtil.createRequestHttpEntity(userToken, Void.class);
+        HttpEntity<Class<Void>> requestHttpGetEntity = ShoppingFlowHttpMock.createHttpEntityMock(userToken, Void.class);
 
         // Phase 2 : List all products
 
@@ -71,7 +72,7 @@ public class ShoppingFlowFullTests {
         BasketRequest basketRequest = new BasketRequest();
         basketRequest.setProductId(productItemResponse.getId());
         basketRequest.setQuantity(3);
-        HttpEntity<BasketRequest> basketSecureRequest = ShoppingFlowTestUtil.createRequestHttpEntity(userToken, basketRequest);
+        HttpEntity<BasketRequest> basketSecureRequest = ShoppingFlowHttpMock.createHttpEntityMock(userToken, basketRequest);
 
         // Act & Assert
         assertDoesNotThrow(() -> testRestTemplate.postForObject("/api/secure/baskets", basketSecureRequest, Void.class));
@@ -111,7 +112,7 @@ public class ShoppingFlowFullTests {
         OrderRequest orderRequest = new OrderRequest();
         orderRequest.setNote("Test");
         orderRequest.setPaymentMethod(selectedPayment.getSlug());
-        HttpEntity<OrderRequest> orderSecureRequest = ShoppingFlowTestUtil.createRequestHttpEntity(userToken, orderRequest);
+        HttpEntity<OrderRequest> orderSecureRequest = ShoppingFlowHttpMock.createHttpEntityMock(userToken, orderRequest);
 
         // Act
         NewOrderResponse newOrderResponse = assertDoesNotThrow(() -> testRestTemplate.postForObject("/api/secure/orders", orderSecureRequest, NewOrderResponse.class));

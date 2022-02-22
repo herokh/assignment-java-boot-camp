@@ -1,5 +1,6 @@
 package com.javabootcamp.shoppingflow.services;
 
+import com.javabootcamp.shoppingflow.mocks.ProductDataMock;
 import com.javabootcamp.shoppingflow.models.*;
 import com.javabootcamp.shoppingflow.repositories.ProductRepository;
 import com.javabootcamp.shoppingflow.views.product.ProductDetailResponse;
@@ -61,41 +62,20 @@ public class ProductServiceTests {
     }
 
     private Optional<Product> createSingleProductMock() {
-        var product = getProduct();
+        var product = ProductDataMock.getProduct();
         return Optional.of(product);
     }
 
     private Page<Product> createProductListMock() {
         var products = new ArrayList<Product>();
-        var product = getProduct();
+        var product = ProductDataMock.getProduct();
         products.add(product);
         Page<Product> productPage = new PageImpl<Product>(products);
 
         return productPage;
     }
 
-    private Product getProduct() {
-        Product product = new Product();
-        product.setId(1L);
-        product.setName("test 1");
-        product.setPrice(100);
-        product.setNetPrice(50);
-        product.setImageUrl("image");
-        product.setTotalReviewer(5);
-        product.setRating(5F);
-        ProductBrand productBrand = new ProductBrand();
-        productBrand.setId(1L);
-        productBrand.setName("brand 1");
-        product.setProductBrand(productBrand);
-        ProductCategory productCategory = new ProductCategory();
-        productCategory.setId(1L);
-        productBrand.setName("category 1");
-        product.setProductCategory(productCategory);
-        Merchant merchant = new Merchant();
-        merchant.setAddress(new Address());
-        product.setMerchant(merchant);
-        return product;
-    }
+
 
 
 }

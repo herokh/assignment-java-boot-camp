@@ -1,5 +1,6 @@
 package com.javabootcamp.shoppingflow.services;
 
+import com.javabootcamp.shoppingflow.mocks.UserDataMock;
 import com.javabootcamp.shoppingflow.models.User;
 import com.javabootcamp.shoppingflow.repositories.UserRepository;
 import com.javabootcamp.shoppingflow.utils.BCryptUtil;
@@ -48,10 +49,7 @@ public class AuthServiceTests {
     }
 
     private Optional<User> createUserMock() {
-        User user = new User();
-        user.setId(1L);
-        user.setUsername("test");
-        user.setPassword(BCryptUtil.hashString("test"));
+        User user = UserDataMock.createUserMock();
         return Optional.of(user);
     }
 }

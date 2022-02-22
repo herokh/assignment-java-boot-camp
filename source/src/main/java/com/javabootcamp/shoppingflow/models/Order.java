@@ -31,6 +31,10 @@ public class Order {
     @JoinColumn(name = "order_payment_id")
     private OrderPayment orderPayment;
 
+    @OneToOne
+    @JoinColumn(name = "order_address_id")
+    private OrderAddress orderAddress;
+
     @OneToMany(mappedBy = "order", fetch=FetchType.LAZY)
     private List<OrderProduct> orderProducts;
 }

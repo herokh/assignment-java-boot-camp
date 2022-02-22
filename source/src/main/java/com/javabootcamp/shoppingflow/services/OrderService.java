@@ -11,6 +11,7 @@ import com.javabootcamp.shoppingflow.views.order.NewOrderResponse;
 import com.javabootcamp.shoppingflow.views.order.OrderProductResponse;
 import com.javabootcamp.shoppingflow.views.order.OrderRequest;
 import com.javabootcamp.shoppingflow.views.order.OrderResponse;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +19,30 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 @Service
+@NoArgsConstructor
 public class OrderService {
+
+    public OrderService(BasketService basketService,
+                        BasketRepository basketRepository,
+                        PaymentRepository paymentRepository,
+                        MerchantRepository merchantRepository,
+                        ProductRepository productRepository,
+                        OrderRepository orderRepository,
+                        OrderPaymentRepository orderPaymentRepository,
+                        OrderAddressRepository orderAddressRepository,
+                        OrderProductRepository orderProductRepository,
+                        ApplicationContext applicationContext) {
+        this.basketService = basketService;
+        this.basketRepository = basketRepository;
+        this.paymentRepository = paymentRepository;
+        this.merchantRepository = merchantRepository;
+        this.productRepository = productRepository;
+        this.orderRepository = orderRepository;
+        this.orderPaymentRepository = orderPaymentRepository;
+        this.orderAddressRepository = orderAddressRepository;
+        this.orderProductRepository = orderProductRepository;
+        this.applicationContext = applicationContext;
+    }
 
     @Autowired
     private BasketService basketService;
@@ -42,6 +66,9 @@ public class OrderService {
     private OrderPaymentRepository orderPaymentRepository;
 
     @Autowired
+    private OrderAddressRepository orderAddressRepository;
+
+    @Autowired
     private OrderProductRepository orderProductRepository;
 
     @Autowired
@@ -54,18 +81,29 @@ public class OrderService {
                 .orElseThrow(() -> new OrderPaymentInvalidException("Payment method is invalid"));
 
         var order = new Order();
+
+        User currentUser = applicationContext.getCurrentUser();
+        order.setPayer(currentUser);
+
         var orderPayment = new OrderPayment();
         orderPayment.setPaymentMethod(payment.getPaymentMethodSlug());
         order.setOrderPayment(orderPayment);
+
+        OrderAddress orderAddress = new OrderAddress();
+        orderAddress.setAddressNumber(currentUser.getAddress().getAddressNumber());
+        orderAddress.setSubdistrict(currentUser.getAddress().getSubdistrict());
+        orderAddress.setDistrict(currentUser.getAddress().getDistrict());
+        orderAddress.setProvince(currentUser.getAddress().getProvince());
+        orderAddress.setZipCode(currentUser.getAddress().getZipCode());
+        orderAddress.setEmail(currentUser.getAddress().getEmail());
+        orderAddress.setTel(currentUser.getAddress().getTel());
+        order.setOrderAddress(orderAddress);
 
         var now = new Date();
         order.setOrderDateTime(now);
 
         final int EXPIRED_PAYMENT_IN_DAYS = 3;
         order.setPaymentExpiredDateTime(DateTimeUtil.addDay(new Date(), EXPIRED_PAYMENT_IN_DAYS));
-
-        User currentUser = applicationContext.getCurrentUser();
-        order.setPayer(currentUser);
 
         order.setTotalAmount(userBasket.getTotalAmount());
 
@@ -86,12 +124,13 @@ public class OrderService {
         order.setInvoiceNumber(UUID.randomUUID().toString());
         order.setNote(newOrder.getNote());
 
-        orderRepository.save(order);
+        Order savedOrder = orderRepository.save(order);
         orderPaymentRepository.save(order.getOrderPayment());
+        orderAddressRepository.save(order.getOrderAddress());
         orderProductRepository.saveAll(order.getOrderProducts());
         basketService.cleanupUserBasket();
 
-        return new NewOrderResponse(order.getId());
+        return new NewOrderResponse(savedOrder.getId());
     }
 
     public OrderResponse getUserOrder(long orderId) {

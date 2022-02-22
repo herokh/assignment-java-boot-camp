@@ -18,7 +18,11 @@ public class AddressSeeder {
     public void createAddressMock() {
         Address address = new Address();
         address.setId(DEFAULT_ADDRESS_ID);
+        address.setAddressNumber("123");
+        address.setSubdistrict("Test");
+        address.setDistrict("Test");
         address.setProvince("Bangkok");
+        address.setZipCode("12345");
         address.setTel("+661234567890");
         address.setEmail("hero@gmail.com");
         addressRepository.save(address);

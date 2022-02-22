@@ -6,11 +6,12 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "address")
+@Table(name = "order_address")
 @Getter
 @Setter
-public class Address {
+public class OrderAddress {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
     private String addressNumber;
@@ -23,6 +24,6 @@ public class Address {
     private String tel;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "order_id")
+    private Order order;
 }
