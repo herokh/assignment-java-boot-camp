@@ -13,7 +13,11 @@ public class Address {
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
+    private String addressNumber;
+    private String subdistrict;
+    private String district;
     private String province;
+    private String zipCode;
 
     private String email;
     private String tel;

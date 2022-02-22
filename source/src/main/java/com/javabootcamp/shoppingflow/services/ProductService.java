@@ -6,6 +6,7 @@ import com.javabootcamp.shoppingflow.repositories.ProductRepository;
 import com.javabootcamp.shoppingflow.views.common.AddressResponse;
 import com.javabootcamp.shoppingflow.views.common.MerchantResponse;
 import com.javabootcamp.shoppingflow.views.product.*;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,9 +18,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@NoArgsConstructor
 public class ProductService {
 
     private static final int PAGE_SIZE = 50;
+
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @Autowired
     private ProductRepository productRepository;

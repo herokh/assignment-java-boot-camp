@@ -31,7 +31,7 @@ public class ShoppingFlowFullTests {
 
     @Test
     @DisplayName("Add 1 product into the basket and then create new order. (full test)")
-    void shoppingFlow_FullTest_ShouldBe_Success() {
+    void shoppingFlowFullTestShouldBeSuccess() {
         // Phase 1 : Signin
 
         // Arrange
